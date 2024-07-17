@@ -11,6 +11,9 @@
 pnpm compose:up
 ```
 
+5. Ejecutar migración de prisma `pnpx prisma migrate dev`
+6. Ejecutar `pnpm start:dev`
+
 Bajar la base de datos
 
 ```
