@@ -15,6 +15,7 @@ import {
   OrderPaginationDto,
 } from './dto';
 import { NATS_SERVICE } from 'src/config';
+import { OrderWithProducts } from './interfaces/order-with-products.interface';
 
 @Injectable()
 export class OrdersService extends PrismaClient implements OnModuleInit {
@@ -136,5 +137,20 @@ export class OrdersService extends PrismaClient implements OnModuleInit {
     const order = await this.findOne(id);
     if (order.status === status) return order;
     return this.order.update({ where: { id }, data: { status } });
+  }
+
+  async createPaymentSession(order: OrderWithProducts) {
+    const paymentSession = await firstValueFrom(
+      this.client.send('create.payment.session', {
+        orderId: order.id,
+        currency: 'usd',
+        items: order.orderItem.map((item) => ({
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+        })),
+      }),
+    );
+    return paymentSession;
   }
 }
