@@ -4,8 +4,9 @@ steps:
     args:
       - -c
       - |
-        build -t us-east1-docker.pkg.dev/poetic-brace-430620-b4/store-registry/orders-ms -f dockerfile.prod --platform=linux/amd64 --build-arg ORDERS_DATABASE_URL=$$DATABASE_URL .
+        docker build -t us-east1-docker.pkg.dev/poetic-brace-430620-b4/store-registry/orders-ms -f dockerfile.prod --platform=linux/amd64 --build-arg ORDERS_DATABASE_URL=$$DATABASE_URL .
     secretEnv: ['DATABASE_URL']
+
   - name: 'gcr.io/cloud-builders/docker'
     args:
       [
