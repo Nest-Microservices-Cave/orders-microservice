@@ -37,7 +37,6 @@ export class OrdersService extends PrismaClient implements OnModuleInit {
       const products: any[] = await firstValueFrom(
         this.client.send({ cmd: 'validate_products' }, productIds),
       );
-      console.log(products);
 
       const totalAmount = createOrderDto.items.reduce((_, orderItem) => {
         const price = products.find(
@@ -81,11 +80,10 @@ export class OrdersService extends PrismaClient implements OnModuleInit {
         })),
       };
     } catch (err) {
-      console.log(err);
-      // throw new RpcException({
-      //   status: HttpStatus.BAD_REQUEST,
-      //   message: 'Check logs',
-      // });
+      throw new RpcException({
+        status: HttpStatus.BAD_REQUEST,
+        message: 'Check logs',
+      });
     }
   }
 
